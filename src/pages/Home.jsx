@@ -21,6 +21,12 @@ export default function Home() {
         description: "Description 2",
         isCompleted: false,
       },
+      {
+        id: nanoid(),
+        title: "Test 3",
+        description: "Description 3",
+        isCompleted: false,
+      },
     ]);
   }, []);
 
