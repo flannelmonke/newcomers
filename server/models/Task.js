@@ -6,7 +6,25 @@ const taskSchema = new mongoose.Schema(
 
     description: { type: String, required: true },
 
-    completed: { type: Boolean, default: false },
+    //if level alr created, decline
+    //if an incremented level is not created yet, remind admin 
+    level: {
+      type: Number,
+      required: true,
+      unique: true,
+    },
+
+    previousTask: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "tasks",
+
+      required: function(){
+
+        return this.level !== 1
+      }
+
+      // unique: true,
+    },
   },
   {
     timestamps: true,

@@ -1,5 +1,5 @@
 const express = require("express");
-const { getAllTasks } = require("../controllers/tasksController");
+const { getAllTasks, createNewTask } = require("../controllers/tasksController");
 
 const tasksRouter = express.Router();
 
@@ -7,5 +7,7 @@ const tasksRouter = express.Router();
 
 //full url path: http://localhost:8000/api/tasks/get-all
 tasksRouter.get("/get-all", getAllTasks);
+
+tasksRouter.post("/new", createNewTask)
 
 module.exports = { tasksRouter };
