@@ -4,12 +4,15 @@ const userSchema = new mongoose.Schema(
   {
     username: { type: String, required: true },
 
-    email: { type: String, required: true, unique },
+    email: { type: String, required: true, unique: true },
 
-    task: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "tasks",
-    },
+    completedTasks:[{
+      taskId:{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "tasks",
+      },
+      videoURL: { type: String, required: true },
+      }],
   },
   {
     timestamps: true,

@@ -103,6 +103,19 @@ const createNewTask = async(req, res ) =>{
     return res.json({message: error.message});
   }
 }
+
+//get completed task
+const getCompletedTask = async (req, res) => {
+  const { userId } = req.params;
+  
+  const user = await Task.findById(userId);
+  console.log("tasks: ", user.tasks);
+
+  return res.json(user.tasks);
+};
+
+
+
 module.exports = {
   getAllTasks,
   getTaskById,
@@ -110,6 +123,6 @@ module.exports = {
 
   //after complete task, fetch getNextTask
   updateCompleteTask,
-
+  getCompletedTask,
   createNewTask
 };

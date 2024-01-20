@@ -3,6 +3,7 @@ const express = require("express");
 const cors = require("cors");
 const mongoose = require("mongoose");
 const { tasksRouter } = require("./routes/tasksRoute");
+const { userRouter } = require("./routes/userRoute");
 
 const app = express();
 const PORT = process.env.PORT || 8000;
@@ -15,6 +16,7 @@ app.use(cors());
 
 //routes
 app.use("/api/tasks", tasksRouter )
+app.use("/api/users", userRouter);
 
 app.listen(PORT, async () => {
   console.log(`Express app on ${PORT}`);
