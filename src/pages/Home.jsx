@@ -2,41 +2,34 @@ import Task from "../components/Task";
 import { useState, useEffect } from "react";
 import { nanoid } from "nanoid";
 import Header from "../components/Header";
+import axios from "axios";
 export default function Home() {
   const [tasks, setTasks] = useState([]);
 
   // get tasks when component mounts first
   useEffect(() => {
     // receive tasks from API
-    setTasks([
-      {
-        id: nanoid(),
-        title: "Test 1",
-        description: "Description 1",
-        isCompleted: true,
-      },
-      {
-        id: nanoid(),
-        title: "Test 2",
-        description: "Description 2",
-        isCompleted: false,
-      },
-      {
-        id: nanoid(),
-        title: "Test 3",
-        description: "Description 3",
-        isCompleted: false,
-      },
-    ]);
+    async function fetchTasks() {
+      try {
+        const response = await axios.get(
+          "http://localhost:8000/api/tasks/get-all"
+        );
+        setTasks(response.data);
+      } catch (error) {
+        console.log(error);
+      }
+    }
+
+    fetchTasks();
   }, []);
 
-  const taskElsArr = tasks.map((task) => {
+  const taskElsArr = tasks.map((task, index, array) => {
     return (
       <Task
         key={task.id}
         title={task.title}
         description={task.description}
-        isCompleted={task.isCompleted}
+        isCompleted={index - 1 === array.length}
       />
     );
   });

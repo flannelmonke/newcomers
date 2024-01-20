@@ -1,9 +1,8 @@
 import { useState } from "react";
 export default function RegisterForm() {
   const [formData, setFormData] = useState({
-    username: "",
-    password: "",
-    confirmPassword: "",
+    email: "",
+    confirmEmail: "",
   });
 
   function handleChange(e) {
@@ -16,36 +15,32 @@ export default function RegisterForm() {
   //   has to be async
   function handleSubmit(e) {
     e.preventDefault();
-    console.log(formData);
+    if (formData.email === formData.confirmEmail) {
+      console.log("successfull logging in");
+    } else {
+      console.log("Email do not match!");
+    }
     // handlesubmit to backends
   }
   return (
     <form onSubmit={handleSubmit} className="login-form">
       <input
-        type="text"
-        name="username"
-        placeholder="Username"
+        type="email"
+        name="email"
+        placeholder="Email"
         onChange={handleChange}
         value={formData.username}
         className="login-input"
       />
       <input
-        type="password"
-        name="password"
-        placeholder="Password"
+        type="email"
+        name="confirmEmail"
+        placeholder="Confirm Email"
         onChange={handleChange}
-        value={formData.password}
+        value={formData.confirmEmail}
         className="login-input"
       />
-      <input
-        type="password"
-        name="confirmPassword"
-        placeholder="Confirm Password"
-        onChange={handleChange}
-        value={formData.password}
-        className="login-input"
-      />
-      <button className="login-button">Log in</button>
+      <button className="login-button">Create an Account</button>
     </form>
   );
 }
