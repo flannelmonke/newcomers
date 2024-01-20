@@ -108,7 +108,7 @@ const createNewTask = async(req, res ) =>{
 const getCompletedTask = async (req, res) => {
   const { userId } = req.params;
   
-  const user = await Task.findById(userId);
+  const user = await User.findById(userId);
   console.log("tasks: ", user.tasks);
 
   return res.json(user.tasks);

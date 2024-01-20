@@ -5,8 +5,14 @@ const User = require("../models/User");
 const createNewUser = async (req, res) => {
     const { username, email } = req.body;
     try {
-        const newUser = await User.create({ username, email });
-        return res.status(201).json(newUser);
+        const existingUser = await User.findOne({ email })
+
+        if(!existingUser){
+            const newUser = await User.create({ username, email });
+            return res.status(201).json(newUser);
+        }else{
+            return res.status(409).json({ message: "User already exists" });
+        }
     } catch (error) {
         return res.status(500).json({ message: error.message });
     }
@@ -30,7 +36,29 @@ const updateCompletedTasks = async (req, res) => {
 
 };
 
-module.exports = { 
-    createNewUser,
-    updateCompletedTasks,
- };
+const getUserById = async (req, res) => {
+    const { userId } = req.params;
+    
+        try {
+            const user = await User.findById(userId)
+            return res.status(200).json(user)
+        } catch (error) {
+            return res.status(500).json({ message: error.message });
+        }
+    }; // Add a closing curly brace here
+
+
+const getCompletedTask = async (req, res) => {
+        const { userId } = req.params;
+        
+        const user = await User.findById(userId);
+        console.log("tasks: ", user.tasks);
+      
+        return res.json(user.tasks);
+};
+      
+    module.exports = { 
+        createNewUser,
+        updateCompletedTasks,
+        getUserById,
+     };
