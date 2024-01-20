@@ -1,6 +1,7 @@
 import Task from "../components/Task";
 import { useState, useEffect } from "react";
 import { nanoid } from "nanoid";
+import Header from "../components/Header";
 export default function Home() {
   const [tasks, setTasks] = useState([]);
 
@@ -35,6 +36,7 @@ export default function Home() {
   });
   return (
     <>
+      <Header />
       <h1>Home</h1>
       {taskElsArr}
     </>

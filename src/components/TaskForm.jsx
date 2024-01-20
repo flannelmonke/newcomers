@@ -5,6 +5,7 @@ export default function TaskForm() {
   const [selectedVideo, setSelectedVideo] = useState(null);
 
   const handlePhotoChange = (event) => {
+    console.log("triggered", event.target.files[0]);
     setSelectedPhoto(event.target.files[0]);
   };
 
