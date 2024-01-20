@@ -100,7 +100,7 @@ const createNewTask = async(req, res ) =>{
   
     return res.json(newTask)
   } catch (error) {
-    
+    return res.json({message: error.message});
   }
 }
 module.exports = {
