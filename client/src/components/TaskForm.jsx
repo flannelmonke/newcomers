@@ -5,12 +5,15 @@ import {
   getDownloadURL,
   uploadBytesResumable,
 } from "firebase/storage";
+import { useNavigate } from "react-router-dom";
 
 export default function TaskForm({ taskId, userId }) {
   const [selectedVideo, setSelectedVideo] = useState(null);
 
+  const navigate = useNavigate()
   // console.log(selectedVideo);
   // console.log(selectedPhoto);
+
 
   const handleVideoChange = (event) => {
     setSelectedVideo(event.target.files[0]);
@@ -49,8 +52,12 @@ export default function TaskForm({ taskId, userId }) {
             //todo
             const response = await axios.patch(
               "http://localhost:8000/api/users/update-completed-tasks",
-              {}
+              {userId, taskId, videoURL: downloadUrl}
             );
+
+            console.log("updated user: ", response.data);
+              
+            navigate("/home")
           } catch (error) {
             console.log(error);
           }
