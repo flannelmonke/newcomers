@@ -19,6 +19,6 @@ userRouter.get("/get-all", getAllUsers);
 
 //taskId = most recently completeted task's id
 //level = most recently completed task's level
-userRouter.get("/get-current-task/:taskId/:level", getCurrentTask);
+userRouter.get("/get-current-task/:taskId", getCurrentTask);
 
 module.exports = { userRouter };

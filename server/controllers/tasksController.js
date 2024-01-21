@@ -36,7 +36,7 @@ const getTaskById = async (req, res) => {
 
 //get next task
 const getCurrentTask = async (req, res) => {
-  const { taskId, level } = req.params;
+  const { taskId } = req.params;
 
   try {
     const mostRecentlyCompletedTask = await Task.findById(taskId);
@@ -44,10 +44,13 @@ const getCurrentTask = async (req, res) => {
     if (mostRecentlyCompletedTask) {
       console.log("mostRecentlyCompletedTask: ", mostRecentlyCompletedTask);
 
-      const currentTaskLevel = Number(level) + 1;
-      const currentTask = await Task.find({
+      const currentTaskLevel = Number(mostRecentlyCompletedTask.level) + 1;
+      console.log("current task level: ", currentTaskLevel);
+      const currentTask = await Task.findOne({
         level: currentTaskLevel,
       });
+
+      console.log("currentTask backend: ", currentTask);
 
       if (currentTask) {
         return res.status(200).json(currentTask);

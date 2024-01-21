@@ -1,8 +1,8 @@
 import Task from "../components/Task";
 import { useState, useEffect } from "react";
-import { nanoid } from "nanoid";
 import Header from "../components/Header";
 import axios from "axios";
+
 export default function Home() {
   const [tasks, setTasks] = useState([]);
   const [user, setUser] = useState(null);
@@ -24,7 +24,7 @@ export default function Home() {
       }
     }
 
-    async function fetchCompletedTask(userId) {
+    async function fetchCompletedTasks(userId) {
       try {
         const response = await axios.get(
           `http://localhost:8000/api/users/get-user-by-id/${userId}`
@@ -40,21 +40,38 @@ export default function Home() {
     }
 
     //fetchCurrentTask
-    async function fetchCurrentTask() {}
 
     fetchTasks();
-    fetchCompletedTask("65ac2c280e7962db1339cfed");
+    fetchCompletedTasks("65ac2c280e7962db1339cfed");
   }, []);
-  // const taskElsArr = tasks.map((task, index, array) => {
-  //   return (
-  //     <Task
-  //       key={task._id}
-  //       title={task.title}
-  //       description={task.description}
-  //       isCompleted={index - 1 === array.length}
-  //     />
-  //   );
-  // });
+
+  //for fetching and setting fetchCurrentTask
+  useEffect(() => {
+    async function fetchCurrentTask() {
+      console.log(
+        "completed tasks array from fetchCurntTasks: ",
+        completedTasks
+      );
+      const mostRecentlyCompletedTask = [...completedTasks].sort(
+        (a, b) => a.level - b.level
+      )[0];
+
+      // completedTasks[completedTasks.length - 1];
+      console.log("most recently completed task: ", mostRecentlyCompletedTask);
+
+      const taskId = mostRecentlyCompletedTask.taskId;
+      const response = await axios.get(
+        `http://localhost:8000/api/users/get-current-task/${taskId}`
+      );
+
+      console.log("fetchCurrentTask response.data: ", response.data);
+      setCurrentTask(response.data);
+    }
+
+    if (completedTasks.length > 0) {
+      fetchCurrentTask();
+    }
+  }, [completedTasks]);
 
   const taskElsArr = completedTasks.map((task) => {
     const completedTask = tasks.find((el) => el._id === task.taskId);
@@ -80,12 +97,32 @@ export default function Home() {
     );
   });
 
+  const currentTaskDisplay = currentTask && (
+    <>
+      <h1 style={{textAlign: "center"}}>Current Task!</h1>
+
+      <Task
+        key={currentTask._id}
+        title={currentTask.title}
+        description={currentTask.description}
+        isCompleted={true}
+        // videoURL={currentTask.videoURL}
+        // userId={currentTask._id}
+        taskId={currentTask._id}
+      />
+    </>
+
+    // <div>
+    //   <h3>{currentTask.title}</h3>
+    // </div>
+  );
   return (
     <>
       <Header />
       <h1>Home</h1>
       {taskElsArr}
-      {/* current task */}
+
+      {currentTaskDisplay}
     </>
   );
 }
