@@ -35,23 +35,22 @@ const getTaskById = async (req, res) => {
 };
 
 //get next task
-const getNextTask = async (req, res) => {
+const getCurrentTask = async (req, res) => {
   const { taskId, level } = req.params;
 
   try {
-    const currentTask = await Task.findById(taskId);
+    const mostRecentlyCompletedTask = await Task.findById(taskId);
 
-    if (currentTask) {
-      console.log("currentTask: ", currentTask);
+    if (mostRecentlyCompletedTask) {
+      console.log("mostRecentlyCompletedTask: ", mostRecentlyCompletedTask);
 
-      const nextTaskLevel = Number(level) + 1;
-      const nextTask = await Task.find({
-        previousTask: currentTask._id,
-        level: nextTaskLevel,
+      const currentTaskLevel = Number(level) + 1;
+      const currentTask = await Task.find({
+        level: currentTaskLevel,
       });
 
-      if (nextTask) {
-        return res.status(200).json(nextTask);
+      if (currentTask) {
+        return res.status(200).json(currentTask);
       } else {
         return res.status(404).json({ message: "Next Task Not found" });
       }
@@ -84,45 +83,42 @@ const updateCompleteTask = async (req, res) => {
     }
   } catch (error) {
     return res.status(500).json({ message: error.message });
-
   }
 };
 
-const createNewTask = async(req, res ) =>{
-
-  const {title, description, level, previousTask} = req.body
-
+const createNewTask = async (req, res) => {
+  const { title, description, level } = req.body;
 
   try {
+    const newTask = await Task.create({
+      title,
+      description,
+      level,
+    });
 
-    const newTask = await Task.create({title, description, level, previousTask})
-
-  
-    return res.json(newTask)
+    return res.json(newTask);
   } catch (error) {
-    return res.json({message: error.message});
+    return res.json({ message: error.message });
   }
-}
+};
 
 //get completed task
 const getCompletedTask = async (req, res) => {
   const { userId } = req.params;
-  
+
   const user = await User.findById(userId);
   console.log("tasks: ", user.tasks);
 
   return res.json(user.tasks);
 };
 
-
-
 module.exports = {
   getAllTasks,
   getTaskById,
-  getNextTask,
+  getCurrentTask,
 
-  //after complete task, fetch getNextTask
+  //after complete task, fetch getCurrentTask
   updateCompleteTask,
   getCompletedTask,
-  createNewTask
+  createNewTask,
 };
