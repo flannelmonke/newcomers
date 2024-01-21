@@ -1,7 +1,7 @@
 import Task from "../components/Task";
 import { useState, useEffect } from "react";
 import Header from "../components/Header";
-import axios from "axios";
+import axios from 'axios';
 
 export default function Home() {
   const [tasks, setTasks] = useState([]);

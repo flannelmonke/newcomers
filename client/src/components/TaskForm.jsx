@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import axios from "axios";
 import {
   getStorage,
   ref,
@@ -7,7 +8,7 @@ import {
 } from "firebase/storage";
 
 export default function TaskForm({ taskId, userId }) {
-  const [selectedVideo, setSelectedVideo] = useState(null);
+  const [selectedVideo, setSelectedVideo] = useState(''); // or some other default value
 
   // console.log(selectedVideo);
   // console.log(selectedPhoto);
@@ -47,18 +48,19 @@ export default function TaskForm({ taskId, userId }) {
           console.log("download url of saved img: ", downloadUrl);
           try {
             //todo
-            const response = await axios.patch(
-              "http://localhost:8000/api/users/update-completed-tasks",
-              {}
-            );
+            console.log("userId: ", userId);
+            console.log("taskId: ", taskId);
+            console.log("videoUrl: ", downloadUrl);
+
+            const response = await axios.patch("http://localhost:8000/api/users/update-completed-tasks",{
+              userId: "65ac2c280e7962db1339cfed", taskId: taskId, videoURL: downloadUrl});
+              setSelectedVideo(downloadUrl)
           } catch (error) {
-            console.log(error);
+            console.log(error.response);
           }
         });
       }
-    );
-    setSelectedVideo(null);
-    // handle request
+    );    // handle request
   };
 
   return (
