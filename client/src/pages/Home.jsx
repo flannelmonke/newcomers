@@ -83,23 +83,22 @@ export default function Home() {
     //   return null;
     // }
     return (
-      completedTask && (
-        <Task
-          key={completedTask._id}
-          title={completedTask.title}
-          description={completedTask.description}
-          isCompleted={true}
-          videoURL={task.videoURL}
-          userId={task._id}
-          taskId={completedTask._id}
-        />
-      )
+      <Task
+        key={completedTask._id}
+        title={completedTask.title}
+        description={completedTask.description}
+        isCompleted={true}
+        videoURL={task.videoURL}
+        userId={task._id}
+        taskId={completedTask._id}
+        level={completedTask.level}
+      />
     );
   });
 
   const currentTaskDisplay = currentTask && (
     <>
-      <h1 style={{textAlign: "center"}}>Current Task!</h1>
+      <h1 style={{ textAlign: "center" }}>Current Task!</h1>
 
       <Task
         key={currentTask._id}
@@ -109,6 +108,7 @@ export default function Home() {
         // videoURL={currentTask.videoURL}
         // userId={currentTask._id}
         taskId={currentTask._id}
+        level={currentTask.level}
       />
     </>
 
@@ -121,7 +121,7 @@ export default function Home() {
       <Header />
       <h1>Home</h1>
       {taskElsArr}
-
+      <br></br>
       {currentTaskDisplay}
     </>
   );

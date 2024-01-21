@@ -66,28 +66,28 @@ const getCurrentTask = async (req, res) => {
 };
 
 //update task completed to true
-const updateCompleteTask = async (req, res) => {
-  const { taskId, completed, userId } = req.body;
+// const updateCompleteTask = async (req, res) => {
+//   const { taskId, completed, userId } = req.body;
 
-  if (!Boolean(completed)) {
-    return res.status(500).json({ message: "Completed must be true" });
-  }
+//   if (!Boolean(completed)) {
+//     return res.status(500).json({ message: "Completed must be true" });
+//   }
 
-  try {
-    const task = await Task.findById(taskId);
-    const user = await User.findById(userId);
+//   try {
+//     const task = await Task.findById(taskId);
+//     const user = await User.findById(userId);
 
-    if (task && user) {
-      user.task = task._id;
+//     if (task && user) {
+//       user.task = task._id;
 
-      await user.save();
-    } else {
-      return res.status(404).json({ message: "Task or User Not found" });
-    }
-  } catch (error) {
-    return res.status(500).json({ message: error.message });
-  }
-};
+//       await user.save();
+//     } else {
+//       return res.status(404).json({ message: "Task or User Not found" });
+//     }
+//   } catch (error) {
+//     return res.status(500).json({ message: error.message });
+//   }
+// };
 
 const createNewTask = async (req, res) => {
   const { title, description, level } = req.body;
@@ -120,8 +120,7 @@ module.exports = {
   getTaskById,
   getCurrentTask,
 
-  //after complete task, fetch getCurrentTask
-  updateCompleteTask,
+
   getCompletedTask,
   createNewTask,
 };

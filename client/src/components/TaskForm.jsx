@@ -6,12 +6,15 @@ import {
   getDownloadURL,
   uploadBytesResumable,
 } from "firebase/storage";
+import { useNavigate } from "react-router-dom";
 
 export default function TaskForm({ taskId, userId }) {
   const [selectedVideo, setSelectedVideo] = useState(''); // or some other default value
 
+  const navigate = useNavigate()
   // console.log(selectedVideo);
   // console.log(selectedPhoto);
+
 
   const handleVideoChange = (event) => {
     setSelectedVideo(event.target.files[0]);
@@ -48,19 +51,25 @@ export default function TaskForm({ taskId, userId }) {
           console.log("download url of saved img: ", downloadUrl);
           try {
             //todo
-            console.log("userId: ", userId);
-            console.log("taskId: ", taskId);
-            console.log("videoUrl: ", downloadUrl);
 
-            const response = await axios.patch("http://localhost:8000/api/users/update-completed-tasks",{
-              userId: "65ac2c280e7962db1339cfed", taskId: taskId, videoURL: downloadUrl});
-              setSelectedVideo(downloadUrl)
+            const response = await axios.patch(
+              "http://localhost:8000/api/users/update-completed-tasks",
+              {userId, taskId, videoURL: downloadUrl}
+            );
+
+            console.log("updated user: ", response.data);
+              
+            navigate("/home")
+   
+
           } catch (error) {
             console.log(error.response);
           }
         });
       }
     );    // handle request
+    
+    setSelectedVideo(null)
   };
 
   return (
