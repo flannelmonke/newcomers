@@ -84,37 +84,34 @@ const updateCompleteTask = async (req, res) => {
     }
   } catch (error) {
     return res.status(500).json({ message: error.message });
-
   }
 };
 
-const createNewTask = async(req, res ) =>{
-
-  const {title, description, level, previousTask} = req.body
-
+const createNewTask = async (req, res) => {
+  const { title, description, level } = req.body;
 
   try {
+    const newTask = await Task.create({
+      title,
+      description,
+      level,
+    });
 
-    const newTask = await Task.create({title, description, level, previousTask})
-
-  
-    return res.json(newTask)
+    return res.json(newTask);
   } catch (error) {
-    return res.json({message: error.message});
+    return res.json({ message: error.message });
   }
-}
+};
 
 //get completed task
 const getCompletedTask = async (req, res) => {
   const { userId } = req.params;
-  
+
   const user = await User.findById(userId);
   console.log("tasks: ", user.tasks);
 
   return res.json(user.tasks);
 };
-
-
 
 module.exports = {
   getAllTasks,
@@ -124,5 +121,5 @@ module.exports = {
   //after complete task, fetch getNextTask
   updateCompleteTask,
   getCompletedTask,
-  createNewTask
+  createNewTask,
 };

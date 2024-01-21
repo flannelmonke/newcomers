@@ -5,6 +5,7 @@ import Header from "../components/Header";
 import axios from "axios";
 export default function Home() {
   const [tasks, setTasks] = useState([]);
+  const [user, setUser] = useState(null);
   const [completedTasks, setCompletedTasks] = useState([]);
   const [currentTask, setCurrentTask] = useState(null);
 
@@ -31,6 +32,8 @@ export default function Home() {
         console.log(response.data.completedTasks);
         setCurrentTask(tasks);
         setCompletedTasks(response.data.completedTasks);
+        setUser(response.data);
+        console.log("user:", response.data);
       } catch (error) {
         console.log(error);
       }
@@ -51,13 +54,19 @@ export default function Home() {
   // });
 
   const taskElsArr = completedTasks.map((task) => {
+    const completedTask = tasks.find((el) => el._id === task.taskId);
+    console.log("line 58 home.jsx", completedTask);
+    // find the task out of the array by id!
+    console.log(task);
     return (
       <Task
-        key={task._id}
-        title={task.title}
-        description={task.description}
+        key={completedTask._id}
+        title={completedTask.title}
+        description={completedTask.description}
         isCompleted={true}
-        videoURL={task.videoURL}
+        videoURL={completedTask.videoURL}
+        userId={task._id}
+        taskId={completedTask._id}
       />
     );
   });
