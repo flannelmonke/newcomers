@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import axios from "axios";
 import {
   getStorage,
   ref,
@@ -8,7 +9,7 @@ import {
 import { useNavigate } from "react-router-dom";
 
 export default function TaskForm({ taskId, userId }) {
-  const [selectedVideo, setSelectedVideo] = useState(null);
+  const [selectedVideo, setSelectedVideo] = useState(''); // or some other default value
 
   const navigate = useNavigate()
   // console.log(selectedVideo);
@@ -50,6 +51,7 @@ export default function TaskForm({ taskId, userId }) {
           console.log("download url of saved img: ", downloadUrl);
           try {
             //todo
+
             const response = await axios.patch(
               "http://localhost:8000/api/users/update-completed-tasks",
               {userId, taskId, videoURL: downloadUrl}
@@ -58,14 +60,16 @@ export default function TaskForm({ taskId, userId }) {
             console.log("updated user: ", response.data);
               
             navigate("/home")
+   
+
           } catch (error) {
-            console.log(error);
+            console.log(error.response);
           }
         });
       }
-    );
-    setSelectedVideo(null);
-    // handle request
+    );    // handle request
+    
+    setSelectedVideo(null)
   };
 
   return (
