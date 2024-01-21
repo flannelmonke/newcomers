@@ -29,8 +29,8 @@ export default function Home() {
         const response = await axios.get(
           `http://localhost:8000/api/users/get-user-by-id/${userId}`
         );
-        console.log(response.data.completedTasks);
-        setCurrentTask(tasks);
+        console.log("fetchCompletedTask: ", response.data.completedTasks);
+        // setCurrentTask(tasks);
         setCompletedTasks(response.data.completedTasks);
         setUser(response.data);
         console.log("user:", response.data);
@@ -38,6 +38,9 @@ export default function Home() {
         console.log(error);
       }
     }
+
+    //fetchCurrentTask
+    async function fetchCurrentTask() {}
 
     fetchTasks();
     fetchCompletedTask("65ac2c280e7962db1339cfed");
@@ -55,19 +58,25 @@ export default function Home() {
 
   const taskElsArr = completedTasks.map((task) => {
     const completedTask = tasks.find((el) => el._id === task.taskId);
-    console.log("line 58 home.jsx", completedTask);
+    console.log("line 58 home.jsx completedTask", completedTask);
     // find the task out of the array by id!
     console.log(task);
+    // const taskElements = task.map();
+    // if (!completedTask) {
+    //   return null;
+    // }
     return (
-      <Task
-        key={completedTask._id}
-        title={completedTask.title}
-        description={completedTask.description}
-        isCompleted={true}
-        videoURL={completedTask.videoURL}
-        userId={task._id}
-        taskId={completedTask._id}
-      />
+      completedTask && (
+        <Task
+          key={completedTask._id}
+          title={completedTask.title}
+          description={completedTask.description}
+          isCompleted={true}
+          videoURL={task.videoURL}
+          userId={task._id}
+          taskId={completedTask._id}
+        />
+      )
     );
   });
 
@@ -76,6 +85,7 @@ export default function Home() {
       <Header />
       <h1>Home</h1>
       {taskElsArr}
+      {/* current task */}
     </>
   );
 }
